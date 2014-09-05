@@ -1,0 +1,43 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2014-09-05 16:44+0100\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: /tmp/indicator-transfer/po/../src//view-gmenu.cpp:425
+msgid "Transfers"
+msgstr ""
+
+#: /tmp/indicator-transfer/po/../src//view-gmenu.cpp:529
+msgid "Successful Transfers"
+msgstr ""
+
+#: /tmp/indicator-transfer/po/../src//view-gmenu.cpp:530
+msgid "Clear all"
+msgstr ""
+
+#: /tmp/indicator-transfer/po/../src//view-gmenu.cpp:536
+msgid "Resume all"
+msgstr ""
+
+#: /tmp/indicator-transfer/po/../src//view-gmenu.cpp:542
+msgid "Pause all"
+msgstr ""
+
+#: /tmp/indicator-transfer/po/../src//view-gmenu.cpp:607
+#, c-format
+msgid "Unknown Download (%s)"
+msgstr ""
