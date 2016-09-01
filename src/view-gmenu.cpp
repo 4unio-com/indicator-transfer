@@ -189,6 +189,9 @@ private:
   {
     const auto uid = g_variant_get_string(vuid, nullptr);
     static_cast<GActions*>(gself)->controller()->cancel(uid);
+    // remove the transfer this action is called when user swipe away the menu item
+    // we must remove the item from the list
+    static_cast<GActions*>(gself)->controller()->clear(uid);
   }
 
   static void on_pause(GSimpleAction*, GVariant* vuid, gpointer gself)
