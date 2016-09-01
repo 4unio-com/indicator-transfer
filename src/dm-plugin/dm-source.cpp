@@ -176,7 +176,11 @@ public:
         char* error_string = nullptr;
         g_variant_get_child(parameters, 0, "s", &error_string);
         set_error_string(error_string);
-        set_state(ERROR);
+        // WORKAROUND: For now the ERROR state is handled intenal by the web-browser
+        // we should not keep ERROR on download list, because of that we will set this
+        // download as CANCELED
+        // set_state(ERROR);
+        set_state(CANCELED);
         g_free(error_string);
       }
     else if (!g_strcmp0(signal_name, "progress"))

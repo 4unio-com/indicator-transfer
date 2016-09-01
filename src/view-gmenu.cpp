@@ -701,12 +701,11 @@ private:
   {
     const auto t = m_model->get(id);
 
-    // For now we do not want to keep canceled or error downloads on the list
+    // WORKAROUND: For now we do not want to keep canceled on the list
     // the app will handle it internally
     switch (t->state)
       {
         case Transfer::CANCELED:
-        case Transfer::ERROR:
           remove(id);
           return;
         default:
