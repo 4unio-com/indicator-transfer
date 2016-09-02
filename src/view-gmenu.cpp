@@ -189,6 +189,9 @@ private:
   {
     const auto uid = g_variant_get_string(vuid, nullptr);
     static_cast<GActions*>(gself)->controller()->cancel(uid);
+    // remove the transfer this action is called when user swipe away the menu item
+    // we must remove the item from the list
+    static_cast<GActions*>(gself)->controller()->clear(uid);
   }
 
   static void on_pause(GSimpleAction*, GVariant* vuid, gpointer gself)
@@ -701,12 +704,11 @@ private:
   {
     const auto t = m_model->get(id);
 
-    // For now we do not want to keep canceled or error downloads on the list
+    // WORKAROUND: For now we do not want to keep canceled on the list
     // the app will handle it internally
     switch (t->state)
       {
         case Transfer::CANCELED:
-        case Transfer::ERROR:
           remove(id);
           return;
         default:
