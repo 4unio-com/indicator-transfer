@@ -1,3 +1,9 @@
+indicator-transfer (0.2+16.10.20160902-0ubuntu1) yakkety; urgency=medium
+
+  * Keep track of failed transfers. (LP: #1616343)
+
+ -- Renato Araujo Oliveira Filho <renato.filho@canonical.com>  Fri, 02 Sep 2016 15:15:27 +0000
+
 indicator-transfer (0.2+16.10.20160808.1-0ubuntu1) yakkety; urgency=medium
 
   * No change rebuild for UAL ABI change
