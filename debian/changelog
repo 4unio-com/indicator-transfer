@@ -1,3 +1,10 @@
+indicator-transfer (0.2+16.10.20161019-0ubuntu1) yakkety; urgency=medium
+
+  [ Ted Gould ]
+  * Adding a systemd user session unit
+
+ -- iain@orangesquash.org.uk <iain@orangesquash.org.uk>  Wed, 19 Oct 2016 06:48:09 +0000
+
 indicator-transfer (0.2+16.10.20160808.1-0ubuntu2) yakkety; urgency=medium
 
   * data/indicator-transfer.conf.in: Only start on Unity 8. This indicator
