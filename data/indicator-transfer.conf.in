@@ -17,4 +17,4 @@ pre-start script
 	fi
 end script
 
-exec @pkglibexecdir@/indicator-transfer-service
+exec $SNAP@pkglibexecdir@/indicator-transfer-service
