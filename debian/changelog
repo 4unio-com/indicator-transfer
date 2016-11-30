@@ -1,3 +1,14 @@
+indicator-transfer (0.2+17.04.20161130.2-0ubuntu1) zesty; urgency=medium
+
+  [ Michael Terry ]
+  * Work inside a snap by prefixing hard coded paths with $SNAP. (LP:
+    #1629009)
+
+  [ Rodney Dawes ]
+  * Use cmake-extras for finding gmock and to work with gmock 1.8.
+
+ -- charles.kerr@canonical.com <charles.kerr@canonical.com>  Wed, 30 Nov 2016 20:23:18 +0000
+
 indicator-transfer (0.2+17.04.20161021-0ubuntu1) zesty; urgency=medium
 
   [ Ted Gould ]
