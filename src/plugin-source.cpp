@@ -1,5 +1,5 @@
 /*
- * Copyright 2015 Canonical Ltd.
+ * Copyright 2015-2016 Canonical Ltd.
  *
  * This program is free software: you can redistribute it and/or modify it
  * under the terms of the GNU General Public License version 3, as published
@@ -36,9 +36,19 @@ public:
   Impl(PluginSource& owner, const std::string& plugin_dir):
     m_owner(owner)
   {
+    auto get_snap_path = []() {
+        const char* env_snap = getenv("SNAP");
+        if (env_snap == nullptr) {
+            return "";
+        }
+        return env_snap;
+    };
+    static const std::string SNAP_PATH{get_snap_path()};
+    std::string real_path = SNAP_PATH + plugin_dir;
+
     GError * error = nullptr;
-    g_debug("plugin_dir '%s'", plugin_dir.c_str());
-    GDir * dir = g_dir_open(plugin_dir.c_str(), 0, &error);
+    g_debug("plugin_dir '%s'", real_path.c_str());
+    GDir * dir = g_dir_open(real_path.c_str(), 0, &error);
     if (dir != nullptr)
     {
       const gchar * name;
@@ -46,7 +56,7 @@ public:
       {
         if (g_str_has_suffix(name, G_MODULE_SUFFIX))
         {
-          gchar * filename = g_build_filename(plugin_dir.c_str(), name, nullptr);
+          gchar * filename = g_build_filename(real_path.c_str(), name, nullptr);
           GModule * mod = g_module_open(filename, G_MODULE_BIND_LOCAL);
           gpointer symbol {};
 
