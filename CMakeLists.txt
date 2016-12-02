@@ -85,7 +85,8 @@ if (${enable_tests})
   enable_testing ()
   add_subdirectory(tests)
   include(EnableCoverageReport)
-  ENABLE_COVERAGE_REPORT(TARGETS ${SERVICE_LIB} ${SERVICE_EXEC} ${DM_LIB}
+  ENABLE_COVERAGE_REPORT(
+    TARGETS indicator-transfer indicator-transfer-service dmtransfers mock-source-plugin
     TESTS test-controller test-multisource test-plugin-source test-view-gmenu
     FILTER /usr/include ${CMAKE_BINARY_DIR}/*
   )
