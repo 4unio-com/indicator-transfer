@@ -73,22 +73,23 @@ endif()
 include_directories (${CMAKE_CURRENT_SOURCE_DIR}/include)
 include_directories (${CMAKE_CURRENT_BINARY_DIR}/include)
 
-# testing & coverage
-if (${enable_tests})
-  pkg_check_modules (DBUSTEST REQUIRED dbustest-1>=14.04.0)
-  enable_testing ()
-  if (${enable_lcov})
-    include(GCov)
-  endif ()
-endif ()
-
 # add the subdirs
 add_subdirectory(data)
 add_subdirectory(include)
 add_subdirectory(src)
 add_subdirectory(po)
+
+# testing & coverage
 if (${enable_tests})
+  pkg_check_modules (DBUSTEST REQUIRED dbustest-1>=14.04.0)
+  enable_testing ()
   add_subdirectory(tests)
+  include(EnableCoverageReport)
+  ENABLE_COVERAGE_REPORT(
+    TARGETS indicator-transfer indicator-transfer-service dmtransfers mock-source-plugin
+    TESTS test-controller test-multisource test-plugin-source test-view-gmenu
+    FILTER /usr/include ${CMAKE_BINARY_DIR}/*
+  )
 endif ()
 
 # uninstall target
