@@ -20,7 +20,7 @@
 #include <transfer/dm-source.h>
 
 #include <click.h>
-#include <ubuntu-app-launch.h>
+#include <ubuntu-app-launch/registry.h>
 
 #include <glib/gstdio.h>
 #include <json-glib/json-glib.h>
@@ -28,6 +28,9 @@
 
 #include <algorithm>
 #include <iostream>
+#include <memory>
+
+namespace ual = ubuntu::app_launch;
 
 namespace unity {
 namespace indicator {
@@ -55,7 +58,8 @@ public:
              const std::string& ccad_path):
     m_bus(G_DBUS_CONNECTION(g_object_ref(connection))),
     m_cancellable(g_cancellable_new()),
-    m_ccad_path(ccad_path)
+    m_ccad_path(ccad_path),
+    m_registry(new ual::Registry())
   {
     id = next_unique_id();
     time_started = time(nullptr);
@@ -108,22 +112,21 @@ public:
   void open_app()
   {
     // destination app has priority over app_id
-    std::string app_id = download_app_id();
+    auto app_id = ual::AppID::parse(download_app_id());
 
     if (app_id.empty() && !m_package_name.empty()) {
-        app_id = std::string(ubuntu_app_launch_triplet_to_app_id(m_package_name.c_str(),
-                                                                 "first-listed-app",
-                                                                 "current-user-version"));
+        app_id = ual::AppID::find(m_package_name);
     }
 
     if (app_id.empty())
       {
-        g_warning("Fail to discovery app-id");
+        g_warning("Failed to discover APP_ID");
       }
     else
       {
-        g_debug("calling ubuntu_app_launch_start_application() for %s", app_id.c_str());
-        ubuntu_app_launch_start_application(app_id.c_str(), nullptr);
+        g_debug("Launching '%s'", std::string(app_id).c_str());
+        auto app = ual::Application::create(app_id, m_registry);
+        app->launch();
       }
   }
 
@@ -582,68 +585,20 @@ private:
 
   void update_app_info_from_package_name(const std::string &package_name)
   {
-    std::string app_id = std::string(ubuntu_app_launch_triplet_to_app_id(package_name.c_str(),
-                                                                         "first-listed-app",
-                                                                         "current-user-version"));
-    if (!app_id.empty())
-      update_app_info_from_app_id(app_id);
-    else
-      g_warning("fail to retrive app-id from package: %s", package_name.c_str());
+    auto app_id = ual::AppID::find(package_name);
+    update_app_info_from_app_id(app_id);
   }
 
   void update_app_info_from_app_id(const std::string &app_id)
   {
-    gchar *app_dir;
-    gchar *app_desktop_file;
-
-    if (!ubuntu_app_launch_application_info(app_id.c_str(), &app_dir, &app_desktop_file))
-      {
-        g_warning("Fail to get app info: %s", app_id.c_str());
-        return;
-      }
-
-    g_debug("App data: %s : %s", app_dir, app_desktop_file);
-    gchar *full_app_desktop_file = g_build_filename(app_dir, app_desktop_file, nullptr);
-    GKeyFile *app_info = g_key_file_new();
-    GError *error = nullptr;
-
-    g_debug("Open desktop file: %s", full_app_desktop_file);
-    g_key_file_load_from_file(app_info, full_app_desktop_file, G_KEY_FILE_NONE, &error);
-    if (error)
-      {
-        g_warning("Fail to open desktop info: %s:%s", full_app_desktop_file, error->message);
-        g_free(full_app_desktop_file);
-        g_key_file_free(app_info);
-        g_error_free(error);
-      }
-    else
-      {
-        gchar *icon_name = g_key_file_get_string(app_info, "Desktop Entry", "Icon", &error);
-        if (error == nullptr)
-          {
-
-            gchar *full_icon_name = g_build_filename(app_dir, icon_name, nullptr);
-            g_debug("App icon: %s", icon_name);
-            g_debug("App full icon name: %s", full_icon_name);
-            // check if it is full path icon or a themed one
-            if (g_file_test(full_icon_name, G_FILE_TEST_EXISTS))
-              set_icon(full_icon_name);
-            else
-              set_icon(icon_name);
-            g_free(full_icon_name);
-          }
-        else
-          {
-            g_warning("Fail to retrive icon:", error->message);
-            g_error_free(error);
-          }
-        g_free(icon_name);
-      }
-
-    g_key_file_free(app_info);
-    g_free(full_app_desktop_file);
-    g_free(app_dir);
-    g_free(app_desktop_file);
+    try {
+      auto app = ual::Application::create(ual::AppID::parse(app_id), m_registry);
+      auto info = app->info();
+      std::string iconPath{info->iconPath()};
+      set_icon(iconPath.c_str());
+    } catch (const std::exception& e) {
+      g_warning("Unable to get icon for '%s': %s", app_id.c_str(), e.what());
+    }
   }
 
   /***
@@ -691,6 +646,7 @@ private:
   std::string m_destination_app;
   std::string m_package_name;
   const std::string m_ccad_path;
+  std::shared_ptr<ual::Registry> m_registry;
 };
 
 } // anonymous namespace
