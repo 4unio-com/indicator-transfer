@@ -84,7 +84,7 @@ if (${enable_tests})
   pkg_check_modules (DBUSTEST REQUIRED dbustest-1>=14.04.0)
   enable_testing ()
   add_subdirectory(tests)
-  include(EnableCoverageReport)
+  find_package(CoverageReport)
   ENABLE_COVERAGE_REPORT(
     TARGETS indicator-transfer indicator-transfer-service dmtransfers mock-source-plugin
     TESTS test-controller test-multisource test-plugin-source test-view-gmenu
