@@ -1,0 +1,2 @@
+rm_conffile /etc/xdg/autostart/indicator-transfer.desktop 0replaceme~
+
