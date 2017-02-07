@@ -1,2 +1,2 @@
-rm_conffile /etc/xdg/autostart/indicator-transfer.desktop 0replaceme~
+rm_conffile /etc/xdg/autostart/indicator-transfer.desktop 0.2+17.04.20170207-0ubuntu1~
 
