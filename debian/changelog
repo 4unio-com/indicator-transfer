@@ -1,9 +1,3 @@
-indicator-transfer (0.2+17.04.20170106-0ubuntu2) UNRELEASED; urgency=medium
-
-  * Handle ubuntu-app-launch API change
-
- -- Ken VanDine <ken.vandine@canonical.com>  Wed, 08 Feb 2017 14:46:00 -0500
-
 indicator-transfer (0.2+17.04.20170106-0ubuntu1) zesty; urgency=medium
 
   * Compatibility with unversioned cmake-extras modules
