@@ -1,3 +1,10 @@
+indicator-transfer (0.2+17.04.20170216.1-0ubuntu1) zesty; urgency=medium
+
+  [ Ken VanDine ]
+  * Handle ubuntu-app-launch API change
+
+ -- Michael Terry <michael.terry@canonical.com>  Thu, 16 Feb 2017 19:21:48 +0000
+
 indicator-transfer (0.2+17.04.20170207-0ubuntu1) zesty; urgency=medium
 
   * Remove old autostart files.
